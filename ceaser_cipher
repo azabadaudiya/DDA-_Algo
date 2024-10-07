@@ -1,0 +1,83 @@
+import java.util.Scanner;   
+
+public class Practical1  
+{      
+    public static String encryptData(String plainText, int key)   
+    {      
+        plainText = plainText.replaceAll("[^a-zA-Z]", "").toUpperCase();         
+        String cipherText = "";   
+        for (int i=0; i<plainText.length(); i++)   
+        {      
+            int pos = plainText.charAt(i)-65;      
+            int encryptPos = (key+pos) % 26;   
+            cipherText += (char)(encryptPos+65);      
+        }      
+        return cipherText;   
+    }   
+
+    public static String decryptData(String cipherText, int key)   
+    {      
+        cipherText = cipherText.replaceAll("[^a-zA-Z]", "").toUpperCase();      
+        String plainText = "";            
+        for (int i=0; i<cipherText.length(); i++)   
+        {     
+            int pos = cipherText.charAt(i)-65;      
+            int decryptPos = (pos-key+26) % 26;   
+            plainText += (char)(decryptPos+65);      
+        }   
+        return plainText;   
+    }   
+ 
+    public static void main(String[] args)   
+    {
+        int choice, key;
+        String plainText, cipherText;
+        Scanner sc = new Scanner(System.in);
+        do
+        {         
+            System.out.println("\n\n**********CAESAR CIPHER ALGORITHM IMPLEMENTATION**********");  
+            System.out.println("==========================================================");
+            System.out.println("1. Encrypt a text");
+            System.out.println("2. Decrypt a text");   
+            System.out.println("3. Apply Brute Force Attack");
+            System.out.println("0. Exit \n");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+            sc.nextLine();
+            switch(choice)
+            {
+                case 1: 
+                    System.out.print("Enter plain text: ");
+                    plainText = sc.nextLine();
+                    System.out.print("Enter key: ");
+                    key = sc.nextInt();
+                    cipherText = encryptData(plainText, key);
+                    System.out.println("Cipher text: " + cipherText);
+                    break;
+                case 2:
+                    System.out.print("Enter cipher text: ");
+                    cipherText = sc.nextLine();
+                    System.out.print("Enter key: ");
+                    key = sc.nextInt();
+                    plainText = decryptData(cipherText, key);
+                    System.out.println("Plain text: " + plainText);
+                    break;
+                case 3:
+                    System.out.print("Enter cipher text: ");
+                    cipherText = sc.nextLine();
+                    for (int i=1; i<26; i++)
+                    {
+                        plainText = decryptData(cipherText, i);
+                        System.out.println("Key = " + i + " : " + plainText);
+                    }
+                    break;
+                case 0:
+                    System.out.println("\n\n");
+                    break;
+                default:
+                    System.out.println("INVALID CHOICE");
+            }
+        } while (choice!=0);
+        sc.close();
+    }
+}   
